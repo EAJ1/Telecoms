@@ -1,123 +1,113 @@
 # Imbali Telecoms
 
-Imbali Telecoms is a cutting-edge website showcasing innovative network solutions for modern telecommunications. This project features a dynamic, interactive frontend with advanced animations and a robust backend API for managing services, contacts, contracts, and news.
+**Website:** [Visit Imbali Telecoms](https://eaj1.github.io/Telecoms/)
 
-## Features
+A Wi-Fi and telecommunications website focused on home internet, business connectivity and a **My Imbali companion-app concept**. The original `Imbali Telecoms.jpeg` logo is retained unchanged.
 
-- **Interactive Hero Section**: 3D network globe visualization with live status indicators and animated network nodes.
-- **Service Cards**: Dynamic service listings fetched from the backend with hover effects and morphing animations.
-- **Testimonials Slider**: Customer reviews with auto-sliding functionality and rating displays.
-- **Portfolio Filtering**: Interactive portfolio items with category-based filtering.
-- **Contract Inquiries**: Form submission for service contract inquiries with backend integration.
-- **News & Blog Section**: Latest telecom updates and articles fetched from the database.
-- **Contact Form**: User-friendly contact form with validation and backend submission.
-- **Dark/Light Mode Toggle**: Theme switching with explosive particle effects.
-- **Voice-Activated Navigation**: Speech recognition for navigating sections.
-- **AR-like Previews**: 3D transforms on hover for enhanced interactivity.
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices.
-- **Backend API**: RESTful API built with Express.js and Supabase for data management.
+The site uses a light, green visual design with a CSS router illustration, responsive navigation, home/business connection cards, coverage enquiries, quote dialogs, FAQs and an interactive app preview.
 
-## Technologies Used
+## Run locally
 
-### Frontend
-- HTML5
-- CSS3 (with advanced animations and effects)
-- JavaScript (ES6+)
-- Particle systems and morphing animations
+Use Node.js 20 or newer, then:
 
-### Backend
-- Node.js
-- Express.js
-- Supabase (PostgreSQL database)
-- CORS for cross-origin requests
+```sh
+cd backend
+npm ci
+cp .env.example .env
+npm start
+```
 
-## Installation and Setup
+Open **http://localhost:3001**. The Express server serves the website and API together; no frontend build is required.
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
-- Supabase account and project
+Without Supabase credentials, the website and app concept work, but enquiry submissions return an unavailable response. Customer input is preserved on a failed submission. The forms need the server; opening the HTML file alone is only useful for a visual preview.
 
-### Backend Setup
-1. Navigate to the `backend` directory:
-   ```bash
-   cd backend
-   ```
+## What works
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+- Home/business buttons switch between three connection options per audience.
+- Each option opens a native, keyboard-accessible quote dialog with the chosen plan selected.
+- Quote submissions include the audience and selected option in the stored message.
+- Coverage enquiries transfer a suburb or town into the contact form for a manual review.
+- Contact and quote forms show pending, success, unavailable and network-error states.
+- The My Imbali concept has Overview, Devices and Help screens. Sample devices can be paused/resumed locally within the preview.
+- Mobile navigation, native FAQ disclosures, visible focus indicators and reduced-motion styles are included.
+- Reading text and controls use at least 16px at default browser settings, with larger main copy, stronger contrast and simpler wording. Small section labels and notes use at least 14px outside the decorative hero illustration.
+- Mobile contact shortcuts hide near the coverage/contact sections and while a form field or quote dialog is active. Coverage enquiries show a clear two-step flow.
 
-3. Create a `.env` file in the `backend` directory with the following variables:
-   ```
-   SUPABASE_URL=your_supabase_project_url
-   SUPABASE_ANON_KEY=your_supabase_anon_key
+The app preview is **not a released mobile app**. It does not authenticate users, read live network data or control actual routers. There are no download links or announced launch dates. The website includes an app-interest enquiry action.
+
+## Service content
+
+Connection categories are enquiry starting points, not confirmed packages. Speeds, prices, equipment, installation and terms must be confirmed through a quote. The website does not invent package prices, coverage results, customer reviews or uptime figures.
+
+The frontend catalogue is defined in `script.js` and remains available without a database. `/api/services` is retained as an optional API for database-backed service records, with Wi-Fi-focused fallback categories; the current landing page does not fetch it. `/api/news` remains available to integrations but is not displayed on the landing page.
+
+## Supabase setup
+
+1. Create a Supabase project.
+2. Run [`backend/schema.sql`](backend/schema.sql) in its SQL editor.
+3. Set these values in `backend/.env`:
+
+   ```dotenv
+   SUPABASE_URL=https://your-project.supabase.co
+   SUPABASE_ANON_KEY=your-anonymous-key
    PORT=3001
    ```
 
-4. Set up your Supabase database with the following tables:
-   - `services`: Columns - id (uuid), name (text), description (text)
-   - `contacts`: Columns - id (uuid), name (text), email (text), message (text)
-   - `contracts`: Columns - id (uuid), company (text), email (text), plan (text), message (text)
-   - `news`: Columns - id (uuid), title (text), excerpt (text), date (date)
+4. Restart the server, submit a test enquiry and verify the row in the dashboard.
 
-5. Start the backend server:
-   ```bash
-   npm start
-   ```
-   The server will run on `http://localhost:3001`.
+The supplied policies enable anonymous service/news reads and enquiry inserts. They do not allow anonymous enquiry reads. Review any pre-existing database policies: the schema does not remove unrelated policies. Do not put service-role keys in frontend code or commit `.env` files.
 
-### Frontend Setup
-1. Open `index.html` in your browser or serve it using a local server (e.g., using VS Code Live Server extension).
+Submissions are stored in Supabase. Email delivery, customer accounts, payments and mobile-app publishing are not implemented. Configure abuse prevention and appropriate privacy information before collecting public enquiries.
 
-2. Ensure the backend is running for API calls to work properly.
+## API
 
-## Usage
+| Method | Endpoint | Fields / purpose |
+| --- | --- | --- |
+| GET | `/api/services` | Database service records or illustrative connection categories |
+| GET | `/api/news` | Up to six articles, newest first |
+| POST | `/api/contact` | `name`, `email`, `message` |
+| POST | `/api/contracts` | `company`, `email`, `plan`, optional `message` |
 
-1. Open the website in your browser.
-2. Navigate through sections using the menu or voice commands.
-3. Toggle between dark and light modes using the theme button.
-4. Interact with service cards, portfolio items, and forms.
-5. View testimonials and news articles.
-6. Submit contact or contract forms (requires backend to be running).
+The API retains the plan identifiers `basic`, `pro` and `enterprise`; the quote message records the customer-facing option and home/business audience. The `company` field accepts a person's name for a home enquiry.
 
-## Project Structure
+Database-dependent routes return HTTP 503 when credentials are absent. Form validation checks required fields, basic email structure, field types and lengths. Forms have a 15-second request timeout; a timeout cannot establish whether the server stored a submission.
 
+## GitHub Pages
+
+The public website is hosted at **https://eaj1.github.io/Telecoms/**. Changes to the website files on `main` deploy automatically through [the Pages workflow](.github/workflows/pages.yml). Check the repository’s Actions tab for deployment status.
+
+Only `index.html`, `styles.css`, `script.js` and the original logo are published. Backend code, dependencies and environment files are excluded from the website artifact.
+
+GitHub Pages serves static files and cannot run the Express API. The app concept works there, while enquiry submission is disabled until a hosted backend origin is entered in the `api-base` meta tag. Set `FRONTEND_ORIGIN=https://eaj1.github.io` on that backend; origins do not include the `/Telecoms/` path.
+
+## Hosting
+
+Deploy `backend` alongside `index.html`, `styles.css`, `script.js` and the original logo. Run `npm start` from `backend`, supply the environment variables and use HTTPS. The server exposes only the listed public assets, not the backend directory.
+
+The default API origin is the website origin. For separate frontend hosting, set the `api-base` meta tag in `index.html` to your backend origin and set `FRONTEND_ORIGIN` on the server to the exact frontend origin.
+
+## Files
+
+```text
+index.html             Landing page, forms, FAQ and app-preview shell
+styles.css             Responsive visual design and CSS illustrations
+script.js              Connection options, app preview and form interactions
+Imbali Telecoms.jpeg    Existing logo, unchanged
+backend/server.js      Express API and public-asset routes
+backend/schema.sql     Database tables and access policies
+backend/.env.example   Configuration template
+TODO.md                Remaining launch requirements
 ```
-Imbali Telecoms/
-├── index.html          # Main HTML file
-├── script.js           # Frontend JavaScript
-├── styles.css          # CSS styles and animations
-├── Imbali Telecoms.jpeg # Logo image
-├── backend/
-│   ├── server.js       # Express server and API routes
-│   ├── package.json    # Backend dependencies
-│   └── package-lock.json
-├── TODO.md             # Project task list
-└── README.md           # This file
+
+## Validation
+
+```sh
+node --check script.js
+node --check backend/server.js
 ```
 
-## API Endpoints
-
-- `GET /api/services`: Retrieve all services
-- `POST /api/contact`: Submit contact form
-- `POST /api/contracts`: Submit contract inquiry
-- `GET /api/news`: Retrieve latest news articles
-
-## Contributing
-
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and commit: `git commit -am 'Add new feature'`
-4. Push to the branch: `git push origin feature-name`
-5. Submit a pull request.
+Also check desktop/mobile layouts, home/business selection, dialog keyboard behaviour, coverage transfer, app-preview controls and form failure/success states. Real database submissions and policies require a configured Supabase project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Built with modern web technologies for optimal performance and user experience.
-- Inspired by innovative telecom solutions and cutting-edge UI/UX design trends.
+No license file is supplied. Choose and add a license before distributing the project under specific terms.

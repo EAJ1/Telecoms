@@ -28,7 +28,7 @@ function renderPlans(nextAudience) {
         const article = document.createElement('article');
         article.className = `plan-card${index === 1 ? ' featured' : ''}`;
         // This template contains only the static catalogue defined above.
-        article.innerHTML = `<span class="plan-tag">${plan.tag}</span><h3>${plan.name}</h3><p>${plan.description}</p><div class="plan-price">Request pricing<small>Get costs for your location and needs</small></div><ul>${plan.features.map(feature => `<li>${feature}</li>`).join('')}</ul><button class="button" type="button">Request a quote <span aria-hidden="true">↗</span></button>`;
+        article.innerHTML = `<span class="plan-tag">${plan.tag}</span><h3>${plan.name}</h3><p>${plan.description}</p><div class="plan-price">Request pricing<small>Get costs for your location and needs</small></div><ul>${plan.features.map(feature => `<li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-check"></use></svg><span>${feature}</span></li>`).join('')}</ul><button class="button" type="button">Request a quote <span aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></span></button>`;
         article.querySelector('button').addEventListener('click', () => openQuote(plan.value));
         planGrid.append(article);
     });
@@ -130,7 +130,7 @@ function renderApp(screen) {
         note.textContent = 'Try pausing a sample device. This does not affect a real network.';
         appScreen.append(note);
     } else {
-        appScreen.innerHTML = '<div class="demo-help"><h4>A little help, right here.</h4><p>The app concept brings connection advice and a way to ask for help into one place.</p><a href="#support">Read Wi-Fi questions →</a><a href="#contact" id="demo-contact">Ask about the app →</a></div>';
+        appScreen.innerHTML = '<div class="demo-help"><h4>A little help, right here.</h4><p>The app concept brings connection advice and a way to ask for help into one place.</p><a href="#support">Read Wi-Fi questions <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a href="#contact" id="demo-contact">Ask about the app <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></div>';
         document.getElementById('demo-contact').addEventListener('click', event => {
             event.preventDefault();
             prepareEnquiry('I would like to know more about the My Imbali app concept.');
